@@ -37,32 +37,21 @@ struct ContentView: View {
         .foregroundColor(.orange)
     }
     
-    var cardRemover: some View {
+    func cardCountAdjuster (by offset: Int, symbol: String) -> some View {
         Button(action:{
-            if cardCount > 1 {
-                cardCount -= 1
-            }
-            
+                cardCount += offset
         }, label: {
-            Image(systemName: "rectangle.stack.badge.minus.fill")
-            Text("移除卡片")
+            Image(systemName: symbol)
         })
-        .imageScale(.medium)
-        .font(.title2)
+        .disabled(cardCount + offset < 1 || cardCount + offset > emojis.count)
+    }
+    
+    var cardRemover: some View {
+        cardCountAdjuster(by: -1, symbol: "rectangle.stack.badge.minus.fill")
     }
     
     var cardAdder: some View {
-        Button(action:{
-            if cardCount < emojis.count {
-                cardCount += 1
-            }
-            
-        }, label: {
-            Image(systemName: "rectangle.stack.badge.plus.fill")
-            Text("添加卡片")
-        })
-        .imageScale(.medium)
-        .font(.title2)
+        cardCountAdjuster(by: 1, symbol: "rectangle.stack.badge.plus.fill")
     }
     
 }
